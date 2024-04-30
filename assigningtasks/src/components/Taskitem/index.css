@@ -1,6 +1,5 @@
 .appointment-item {
     list-style-type: none;
-    border: 1px solid #b5b7c4;
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 16px;
@@ -23,18 +22,17 @@
     margin-bottom: 10px;
   }
   
+  .bottomCard {
+    display: flex;
+    flex-direction: row;
+  }
+  
   .title {
     color: #171f46;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-size: 16px;
     font-weight: 500;
     margin: 0px;
-  }
-  
-  @media screen and (min-width: 768px) {
-    .list-title-heading {
-      font-size: 18px;
-    }
   }
   
   .star-button {
@@ -54,23 +52,18 @@
     outline: none;
   }
   
-  @media screen and (min-width: 768px) {
-    .star {
-      width: 24px;
-      height: 24px;
-    }
-  }
-  
   .date {
     color: #7e858e;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     font-size: 12px;
     margin: 0px;
   }
   
-  @media screen and (min-width: 768px) {
-    .date {
-      font-size: 16px;
-    }
+  .in-progress {
+    background-color: lightyellow;
+  }
+  
+  .completed {
+    background-color: lightgreen;
   }
   

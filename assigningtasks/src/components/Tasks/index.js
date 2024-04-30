@@ -1,21 +1,18 @@
-// Appointments Component
-
-import {Component} from 'react'
-import {v4} from 'uuid'
-import {format} from 'date-fns'
-
-import AppointmentItem from '../AppointmentItem'
-
+import { Component } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { format } from 'date-fns'
+import AppointmentItem from '../Taskitem'
 import './index.css'
 
-class Appointments extends Component {
+class Taskitem extends Component {
   state = {
     appointmentsList: [],
     titleInput: '',
     dateInput: '',
     isFilterActive: false,
-    task:false,
-    date:false
+    teamtype: 'Team',
+    taskError: false,
+    dateError: false
   }
 
   toggleIsStarred = id => {
@@ -30,11 +27,9 @@ class Appointments extends Component {
   }
 
   onFilter = () => {
-    const {isFilterActive} = this.state
-
-    this.setState({
-      isFilterActive: !isFilterActive,
-    })
+    this.setState(prevState => ({
+      isFilterActive: !prevState.isFilterActive,
+    }))
   }
 
   onChangeDateInput = event => {
@@ -45,47 +40,47 @@ class Appointments extends Component {
     this.setState({titleInput: event.target.value})
   }
 
+  onChangeTeamType = event => {
+    this.setState({teamtype: event.target.value})
+  }
+
   onAddAppointment = event => {
     event.preventDefault()
-    const {titleInput, dateInput} = this.state
-    if(titleInput===""){
-        this.setState({task:true})
+    const { titleInput, dateInput } = this.state
+    if (!titleInput) {
+      this.setState({ taskError: true })
     }
-    else if(dateInput===""){
-        this.setState({date:true})
+    if (!dateInput) {
+      this.setState({ dateError: true })
     }
-    else{
-        const formattedDate = dateInput
-      ? format(new Date(dateInput), 'dd MMMM yyyy, EEEE')
-      : ''
-    const newAppointment = {
-      id: v4(),
-      title: titleInput,
-      date: formattedDate,
-      isStarred: false,
-    }
-
-    this.setState(prevState => ({
-      appointmentsList: [...prevState.appointmentsList, newAppointment],
-      titleInput: '',
-      dateInput: '',
-    }))
+    if (titleInput && dateInput) {
+      const formattedDate = format(new Date(dateInput), 'dd MMMM yyyy, EEEE')
+      const newAppointment = {
+        id: uuidv4(),
+        title: titleInput,
+        date: formattedDate,
+        isStarred: false,
+        teamtype: this.state.teamtype,
+      }
+      this.setState(prevState => ({
+        appointmentsList: [...prevState.appointmentsList, newAppointment],
+        titleInput: '',
+        dateInput: '',
+        taskError: false,
+        dateError: false
+      }))
     }
   }
 
   getFilteredAppointmentsList = () => {
-    const {appointmentsList, isFilterActive} = this.state
-
-    if (isFilterActive) {
-      return appointmentsList.filter(
-        eachTransaction => eachTransaction.isStarred === true,
-      )
-    }
-    return appointmentsList
+    const { appointmentsList, isFilterActive } = this.state
+    return isFilterActive
+      ? appointmentsList.filter(appointment => appointment.isStarred)
+      : appointmentsList
   }
 
   render() {
-    const {titleInput, dateInput, isFilterActive,date,task} = this.state
+    const { titleInput, dateInput, isFilterActive, teamtype, taskError, dateError } = this.state
     const filterClassName = isFilterActive ? 'filter-filled' : 'filter-empty'
     const filteredAppointmentsList = this.getFilteredAppointmentsList()
 
@@ -96,9 +91,7 @@ class Appointments extends Component {
             <div className="add-appointment-container">
               <form className="form" onSubmit={this.onAddAppointment}>
                 <h1 className="add-appointment-heading">Add Tasks</h1>
-                <label htmlFor="title" className="label">
-                  Task
-                </label>
+                <label htmlFor="title" className="label">Task</label>
                 <input
                   type="text"
                   id="title"
@@ -107,10 +100,9 @@ class Appointments extends Component {
                   className="input"
                   placeholder="Title"
                 />
-                {task && <p className='errormessage'>Input should not be empty</p>}
-                <label htmlFor="date" className="label">
-                  Due Date
-                </label>
+                {taskError && <p className='errormessage'>Task input should not be empty</p>}
+
+                <label htmlFor="date" className="label">Due Date</label>
                 <input
                   type="date"
                   id="date"
@@ -118,10 +110,20 @@ class Appointments extends Component {
                   onChange={this.onChangeDateInput}
                   className="input"
                 />
-                {date && <p className='errormessage'>Date should not be empty</p>}
-                <button type="submit" className="add-button">
-                  Add
-                </button>
+                {dateError && <p className='errormessage'>Due date should not be empty</p>}
+
+                <label htmlFor="teamType" className="label">Team Type</label>
+                <select
+                  id="teamType"
+                  value={teamtype}
+                  onChange={this.onChangeTeamType}
+                  className="input1"
+                >
+                  <option value="Team" >Team</option>
+                  <option value="Individual">Individual</option>
+                </select>
+
+                <button type="submit" className="add-button">Add</button>
               </form>
               <img
                 src="https://assets.ccbp.in/frontend/react-js/appointments-app/appointments-img.png"
@@ -156,4 +158,4 @@ class Appointments extends Component {
   }
 }
 
-export default Appointments
+export default Taskitem

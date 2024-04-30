@@ -81,10 +81,23 @@
   .input {
     color: #131415;
     font-family: 'Roboto';
-    font-size: 12px;
+    font-size: 30px;
     border: 1px solid #7e858e;
     border-radius: 4px;
     height: 40px;
+    padding-left: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    outline: none;
+  }
+  .input1 {
+    color: #131415;
+    font-family: 'Roboto';
+    font-size: 18px;
+    border: 1px solid #7e858e;
+    border-radius: 4px;
+    height: 55px;
     padding-left: 16px;
     padding-top: 8px;
     padding-bottom: 8px;

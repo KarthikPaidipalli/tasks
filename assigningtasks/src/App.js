@@ -1,4 +1,4 @@
-import Appointments from './components/Appointments'
+import Appointments from './components/Tasks'
 
 import './App.css'
 
